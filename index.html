@@ -5,30 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Climate Survival</title>
     <style>
-        /* Remove scrollbars while maintaining scroll functionality */
-        html, body {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-        
-        /* Chrome, Safari and Opera */
-        html::-webkit-scrollbar, 
-        body::-webkit-scrollbar {
-            display: none;
-        }
-        
-        /* Also remove scrollbars from any other elements */
-        * {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        *::-webkit-scrollbar {
-            display: none;
-        }
-        
         /* Reset and base styles */
         * {
             margin: 0;
@@ -39,6 +15,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
             background: linear-gradient(135deg, #0095b6, #00b7c2, #00a896);
             display: flex;
@@ -46,6 +23,14 @@
             align-items: center;
             justify-content: center;
             color: #333;
+            /* Hide scrollbar but keep functionality */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        body::-webkit-scrollbar {
+            display: none;
         }
         
         /* Decorative elements */
@@ -229,8 +214,6 @@
             border-radius: 16px;
             max-width: 500px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.7);
@@ -239,6 +222,16 @@
             transform: translateY(20px);
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+            /* Hide scrollbar but keep functionality */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .modal-content::-webkit-scrollbar {
+            display: none;
         }
         
         .modal.active .modal-content {
@@ -299,6 +292,26 @@
             margin-bottom: 8px;
         }
         
+        /* Project overview styles */
+        .project-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(242, 208, 164, 0.2);
+            transition: transform 0.2s ease;
+        }
+        
+        .project-section:hover {
+            transform: translateX(5px);
+            background-color: rgba(242, 208, 164, 0.3);
+        }
+        
+        .project-section h3 {
+            color: #00a896;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
         /* Animations */
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
@@ -350,6 +363,40 @@
             display: none;
         }
         
+        /* Project Overview button */
+        #project-overview-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #0077b6;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        #project-overview-btn:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        #project-overview-btn::before {
+            content: '📋';
+            font-size: 18px;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             h1 {
@@ -385,9 +432,8 @@
                 font-size: 28px;
             }
             
-            #about-btn {
+            #about-btn, #project-overview-btn {
                 top: 10px;
-                left: 10px;
                 padding: 8px 16px;
                 font-size: 14px;
             }
@@ -409,6 +455,9 @@
     </style>
 </head>
 <body>
+    <!-- Project Overview button -->
+    <button id="project-overview-btn">Project Overview</button>
+
     <!-- Decorative elements -->
     <div class="sun"></div>
     <div class="sand"></div>
@@ -436,7 +485,7 @@
         </div>
     </div>
     
-    <!-- Modal -->
+    <!-- About Modal -->
     <div id="about-modal" class="modal">
         <div class="modal-content">
             <div class="close-btn">
@@ -451,22 +500,72 @@
         </div>
     </div>
     
+    <!-- Project Overview Modal -->
+    <div id="project-overview-modal" class="modal">
+        <div class="modal-content">
+            <div class="close-btn">
+                <span class="close-icon">×</span>
+            </div>
+            
+            <h2>Project Overview</h2>
+            
+            <div id="project-sections-container">
+                <div class="project-section">
+                    <h3>How to Play</h3>
+                    <p>You can interact with resources by 
+                            touching them and clicking space.
+                                            They will regenerate after a certain
+                                    amount of time. The goal is to get as 
+                                many resources as possible, but you 
+must deal with obstacles like eating 
+food as well as rising heat/water 
+levels. If you die, for example from 
+water, you can simple restart the 
+game by clicking the green flag.</p>
+                </div>
+                
+                <div class="project-section">
+                    <h3>Game Mechanics</h3>
+                    <p>The game simulates various climate scenarios where players must make decisions that affect the environment. Each choice has consequences that impact the game's outcome, teaching players about the real-world effects of climate-related decisions.</p>
+                </div>
+                
+                <div class="project-section">
+                    <h3>Educational Value</h3>
+                    <p>Through interactive gameplay, Climate Survival teaches important concepts about:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Carbon footprint reduction</li>
+                        <li>Renewable energy sources</li>
+                        <li>Sustainable living practices</li>
+                        <li>Climate change adaptation strategies</li>
+                    </ul>
+                </div>
+                
+                <div class="project-section">
+                    <h3>Technology</h3>
+                    <p>This project was developed using Scratch, making it accessible to players of all ages. The web interface was created with HTML, CSS, and JavaScript to provide an engaging user experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Debug info -->
     <div class="debug-info" id="debug-info"></div>
     
     <script>
         // Team members data
         const teamMembers = [
-            { name: "Vivan Jaiswal", bio: "I'm a 9th grader at Sharon High School." },
-            { name: "Neev Lodha", bio: "I'm a 9th grader at Sharon High School." },
-            { name: "Yeonjun Lee", bio: "I'm a 9th grader at Sharon High School." },
-            { name: "Charles He", bio: "I'm a 9th grader at Sharon High School." }
+            { name: "Vivan Jaiswal", bio: "Team member specializing in climate science research." },
+            { name: "Neev Lodha", bio: "Expert in sustainable development and environmental policy." },
+            { name: "Yeonjun Lee", bio: "Focused on climate change adaptation strategies." },
+            { name: "Charles He", bio: "Specializes in renewable energy solutions and carbon footprint reduction." }
         ];
         
         // DOM elements
-        const modal = document.getElementById('about-modal');
+        const aboutModal = document.getElementById('about-modal');
+        const projectModal = document.getElementById('project-overview-modal');
         const aboutBtn = document.getElementById('about-btn');
-        const closeBtn = document.querySelector('.close-btn');
+        const projectBtn = document.getElementById('project-overview-btn');
+        const closeButtons = document.querySelectorAll('.close-btn');
         const teamMembersContainer = document.getElementById('team-members-container');
         const debugInfo = document.getElementById('debug-info');
         
@@ -507,7 +606,7 @@
         populateTeamMembers();
         
         // Show modal function
-        function showModal() {
+        function showModal(modal) {
             debug('Opening modal');
             modal.style.display = 'flex';
             // Trigger reflow to enable transition
@@ -516,7 +615,7 @@
         }
         
         // Hide modal function
-        function hideModal() {
+        function hideModal(modal) {
             debug('Closing modal');
             modal.classList.remove('active');
             setTimeout(() => {
@@ -527,18 +626,31 @@
         // Event listeners
         aboutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            showModal();
+            showModal(aboutModal);
         });
         
-        closeBtn.addEventListener('click', function(e) {
+        projectBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            hideModal();
+            showModal(projectModal);
+        });
+        
+        // Add event listeners to all close buttons
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Find the parent modal
+                const modal = this.closest('.modal');
+                hideModal(modal);
+            });
         });
         
         // Close modal when clicking outside
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                hideModal();
+            if (event.target === aboutModal) {
+                hideModal(aboutModal);
+            }
+            if (event.target === projectModal) {
+                hideModal(projectModal);
             }
         });
         
@@ -555,14 +667,20 @@
             palmTreeRight.style.transform = `scaleX(-1) translateX(${-moveX}px) rotate(${-moveX/2}deg)`;
         });
         
-        // Ensure the button works by adding a direct click handler
+        // Ensure the buttons work by adding direct click handlers
         document.addEventListener('DOMContentLoaded', function() {
             debug('Page loaded');
             
-            // Force re-attach event listener
+            // Force re-attach event listeners
             aboutBtn.onclick = function() {
-                debug('Button clicked');
-                showModal();
+                debug('About button clicked');
+                showModal(aboutModal);
+                return false;
+            };
+            
+            projectBtn.onclick = function() {
+                debug('Project button clicked');
+                showModal(projectModal);
                 return false;
             };
         });
