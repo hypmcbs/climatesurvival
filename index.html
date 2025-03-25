@@ -231,6 +231,27 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
         }
+
+        @keyframes pulse {
+            0% {
+            transform: scale(1); /* Start at original size */
+            opacity: 1;
+        }
+            50% {
+            transform: scale(1.05); /* Slightly larger at the midpoint */
+            opacity: 0.9;
+        }
+            100% {
+            transform: scale(1); /* Return to original size */
+            opacity: 1;
+        }
+}
+
+/* Apply the pulse animation */
+.sun {
+  animation: pulse 1s infinite; /* Duration of 2 seconds, loop infinitely */
+}
+        
     </style>
 </head>
 <body>
